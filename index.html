@@ -35,7 +35,7 @@
 
         <div class="booking-content">
             <h1>Cruise Queen</h1>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book./p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
         </div>
 
 
@@ -43,7 +43,7 @@
             <h3>Book Ocean Time</h3>
             <div class="input-group">
                 <label for="">Flying From</label>
-                <input class="inp-style" type="text" name="" placeholder="Dhake, Bangladesh">
+                <input class="inp-style" type="text" name="" placeholder="Dhaka, Bangladesh">
             </div>
             <div class="input-group">
                 <label for="">Flying To</label>
@@ -86,7 +86,7 @@
                         <p>Subtotal</p>
                     </div>
                     <div class="right">
-                        <p id="subtotal">$500</p>
+                        <p id="subtotal">$00</p>
                     </div>
                 </div>
 
@@ -104,7 +104,7 @@
                         <h4>Total</h4>
                     </div>
                     <div class="right">
-                        <p>$550</p>
+                        <p id="total-price">$550</p>
                     </div>
                 </div>
             </div>
@@ -132,36 +132,40 @@
             if(isIncrease==false && ticketNewCount > 0){
                  ticketNewCount=ticketCount - 1;
             }
-            let ticketTotal=0;
-            if(ticketType=='first-class-count'){
-                ticketTotal=ticketNewCount * 150;
-            }
             
-            if(ticketType=='economy-ticket-count'){
-                ticketTotal=ticketNewCount * 100;
-            }
-            // ticketTotal=firstClassTotal + economyTotal;
-            // const subTotal=document.getElementById('subtotal');
-            // subCount=parseInt(subTotal.innerText);
-            // subTotal.innerText='$'+ ticketTotal;
-             
+      
             ticketInput.value=ticketNewCount;
-            // tax calculation
-            // let tax=ticketTotal*0.1;
-            // const taxValue=document.getElementById('tax');
-            // taxValue=parseInt(taxValue.innerText);
-            // taxValue.innerText='$' + tax;
+            calculateTotal();
+     
+        }
+        // calculation function
+        function calculateTotal(){
+            
+            const firstClassCount=getInput('first-class-count');
+            const economyCount=getInput('economy-ticket-count');
+            const ticketPrice=firstClassCount*150 + economyCount*100;
+            const subTotal=document.getElementById('subtotal').innerText='$'+ ticketPrice;
+           //tax calculation
+           const tax=ticketPrice*0.1;
+           const taxValue=document.getElementById('tax').innerText='$'+tax;
+           //Grand Total Calculation
+           const total=ticketPrice + tax;
+           const totalPrice=document.getElementById('total-price').innerText='$' + total;
 
+             
+        }
+        //get input
+        function getInput(ticketType){
+            const ticketInput=document.getElementById(ticketType);
+            const ticketCount=parseInt(ticketInput.value);
+            return ticketCount;
 
         }
         const ticketDecreaseBtn=document.getElementById('ticket-decrease');
         ticketDecreaseBtn.addEventListener('click',function(){
-            // const ticketInput=document.getElementById('first-class-count');
-            // const ticketCount=parseInt(ticketInput.value);
+            
             buttonHandler('first-class-count', false);
-            //  const ticketNewCount=ticketCount - 1;
-            // ticketInput.value=ticketNewCount;
-
+           
         })
         const economyTicketIncreaseBtn=document.getElementById('economy-ticket-increase');
         economyTicketIncreaseBtn.addEventListener('click',function(){
