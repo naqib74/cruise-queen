@@ -39,7 +39,7 @@
         </div>
 
 
-        <div class="booking-form">
+        <div id='ticket-form' class="booking-form">
             <h3>Book Ocean Time</h3>
             <div class="input-group">
                 <label for="">Flying From</label>
@@ -62,7 +62,7 @@
             <div class="input-group f-class">
                 <div>
                     <label for="">First Class ($150)</label>
-                    <input id="first-class-count" class="inp-style inp-width" type="text" name="" value="1">
+                    <input id="first-class-count" class="inp-style inp-width" type="text" name="" value="0">
                 </div>
                 <div class="plus-minus-btn">
                     <button id="ticket-decrease" class="btn btn-default"><i class="fas fa-minus"></i></button>
@@ -73,7 +73,7 @@
             <div class="input-group f-class">
                 <div>
                     <label for="">Economy ($100)</label>
-                    <input id="economy-ticket-count" class="inp-style inp-width" type="text" name="" value="1">
+                    <input id="economy-ticket-count" class="inp-style inp-width" type="text" name="" value="0">
                 </div>
                 <div class="plus-minus-btn">
                     <button id="economy-ticket-decrease" class="btn btn-default"><i class="fas fa-minus"></i></button>
@@ -108,20 +108,41 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-style">Book Now</button>
+            <button id="buy-button" class="btn-style">Book Now</button>
+        </div>
+        <!--Confirmation message-->
+        <div id="confirmation-message">
+            <h2>You have successfully purchased tickets. Thank you for staying with us.Have a safe journey.</h2>
         </div>
     </main>
 
     <!--Javascript-->
     <script>
-        const ticketIncreaseBtn=document.getElementById('ticket-increase');
-        ticketIncreaseBtn.addEventListener('click',function(){
-          
-            
-            // ticketInput.value=ticketNewCount;
-            buttonHandler('first-class-count', true);
+        // Button event Handler function 
+        function eventHandler(buttonName){
+            document.getElementById(buttonName).addEventListener('click',function(){
+                if(buttonName=='ticket-increase'){
+                    buttonHandler('first-class-count', true);
+                }
+                else if(buttonName=='ticket-decrease'){
+                    buttonHandler('first-class-count', false);
+                }
+                else if(buttonName=='economy-ticket-increase'){
+                    buttonHandler('economy-ticket-count', true); 
+                }
+                else if(buttonName=='economy-ticket-decrease'){
+                    buttonHandler('economy-ticket-count', false);
+                } 
 
-        })
+            })
+
+        }
+        eventHandler('economy-ticket-increase');
+        eventHandler('economy-ticket-decrease');
+        eventHandler('ticket-increase');
+        eventHandler('ticket-decrease');
+
+        // input value increase-decrease function
         function buttonHandler(ticketType, isIncrease){
             const ticketInput=document.getElementById(ticketType);
             const ticketCount=parseInt(ticketInput.value);
@@ -132,51 +153,39 @@
             if(isIncrease==false && ticketNewCount > 0){
                  ticketNewCount=ticketCount - 1;
             }
-            
-      
             ticketInput.value=ticketNewCount;
+
             calculateTotal();
-     
         }
-        // calculation function
+
+        // Total price calculation function
         function calculateTotal(){
-            
-            const firstClassCount=getInput('first-class-count');
-            const economyCount=getInput('economy-ticket-count');
-            const ticketPrice=firstClassCount*150 + economyCount*100;
-            const subTotal=document.getElementById('subtotal').innerText='$'+ ticketPrice;
+            // subtotal calculation 
+            const firstClassCount=getInputValue('first-class-count');
+            const economyCount=getInputValue('economy-ticket-count');
+            const ticketPrice=firstClassCount * 150 + economyCount * 100;
+            const subTotal=document.getElementById('subtotal').innerText='$' + ticketPrice;
            //tax calculation
            const tax=ticketPrice*0.1;
-           const taxValue=document.getElementById('tax').innerText='$'+tax;
+           const taxValue=document.getElementById('tax').innerText= '$' + tax;
            //Grand Total Calculation
            const total=ticketPrice + tax;
-           const totalPrice=document.getElementById('total-price').innerText='$' + total;
-
-             
+           const totalPrice=document.getElementById('total-price').innerText='$' + total;    
         }
-        //get input
-        function getInput(ticketType){
+
+        //get input value
+        function getInputValue(ticketType){
             const ticketInput=document.getElementById(ticketType);
             const ticketCount=parseInt(ticketInput.value);
             return ticketCount;
-
         }
-        const ticketDecreaseBtn=document.getElementById('ticket-decrease');
-        ticketDecreaseBtn.addEventListener('click',function(){
-            
-            buttonHandler('first-class-count', false);
-           
-        })
-        const economyTicketIncreaseBtn=document.getElementById('economy-ticket-increase');
-        economyTicketIncreaseBtn.addEventListener('click',function(){
-            buttonHandler('economy-ticket-count', true);
+        // Booking Button
+       const ticketBuyBtn=document.getElementById('buy-button');
+       ticketBuyBtn.addEventListener('click',function(){
+           document.getElementById('ticket-form').style.display='none';
+           document.getElementById('confirmation-message').style.display='block';
 
-        })
-        const economyTicketDecreaseBtn=document.getElementById('economy-ticket-decrease');
-        economyTicketDecreaseBtn.addEventListener('click',function(){
-            buttonHandler('economy-ticket-count', false);
-            
-        })
+       })
 
     </script>
 </body>
